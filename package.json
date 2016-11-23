@@ -1,0 +1,24 @@
+{
+  "name": "ppt-template",
+  "version": "0.0.3",
+  "description": "Load pptx file ,clone slide, replace content and saveAs.",
+  "main": "index.js",
+  "directories": {},
+  "dependencies": {
+    "async": "^2.1.2",
+    "jszip": "^3.1.3",
+    "xml2js": "^0.4.17"
+  },
+  "devDependencies": {
+    "async": "^2.1.2",
+    "jszip": "^3.1.3",
+    "xml2js": "^0.4.17"
+  },
+  "scripts": {},
+  "keywords": [
+    "powerpoint",
+    "ppt"
+  ],
+  "author": "Eating Lee",
+  "license": "MIT"
+}
