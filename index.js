@@ -1,4 +1,4 @@
 module.exports = {};
 
-module.exports.Presentation = require('./Presentation');
-module.exports.Slide = require('./Slide');
+module.exports.Presentation = require('./lib/Presentation');
+module.exports.Slide = require('./lib/Slide');
