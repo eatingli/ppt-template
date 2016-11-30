@@ -20,7 +20,7 @@
   },
   "scripts": {
     "build": "babel lib -d dist",
-    "test": "babel-node test/Presentation_test.js"
+    "test": "npm run build & babel-node test/Presentation_test.js"
   },
   "keywords": [
     "powerpoint",
