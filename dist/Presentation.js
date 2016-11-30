@@ -3,6 +3,7 @@
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var fs = require('fs');
+var fsp = require('fs-promise');
 var async = require('async');
 var JSZip = require('jszip');
 var xml2js = require('xml2js');
@@ -12,8 +13,16 @@ var Presentation = module.exports = function () {
     this.contents = {};
 };
 
+function sleep() {
+    var ms = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+    return new Promise(function (resolve, reject) {
+        return setTimeout(resolve, ms);
+    });
+}
+
 Presentation.prototype.load = function () {
-    var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(pptx, callback) {
+    var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(pptx) {
         var zip, key, ext, type, content;
         return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
@@ -54,9 +63,6 @@ Presentation.prototype.load = function () {
                         break;
 
                     case 14:
-                        callback();
-
-                    case 15:
                     case 'end':
                         return _context.stop();
                 }
@@ -64,30 +70,27 @@ Presentation.prototype.load = function () {
         }, _callee, this);
     }));
 
-    return function (_x, _x2) {
+    return function (_x2) {
         return _ref.apply(this, arguments);
     };
 }();
 
 Presentation.prototype.loadFile = function () {
-    var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(pptxFilePath, callback) {
-        var self;
+    var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(pptxFilePath) {
+        var pptxFile;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
             while (1) {
                 switch (_context2.prev = _context2.next) {
                     case 0:
-                        self = this;
-
-                        //讀檔
-
-                        fs.readFile(pptxFilePath, function (err, pptxFile) {
-
-                            if (err) throw err;
-
-                            self.load(pptxFile, callback);
-                        });
+                        _context2.next = 2;
+                        return fsp.readFile(pptxFilePath);
 
                     case 2:
+                        pptxFile = _context2.sent;
+                        _context2.next = 5;
+                        return this.load(pptxFile);
+
+                    case 5:
                     case 'end':
                         return _context2.stop();
                 }
@@ -95,7 +98,7 @@ Presentation.prototype.loadFile = function () {
         }, _callee2, this);
     }));
 
-    return function (_x3, _x4) {
+    return function (_x3) {
         return _ref2.apply(this, arguments);
     };
 }();
