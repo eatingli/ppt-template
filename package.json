@@ -1,6 +1,6 @@
 {
   "name": "ppt-template",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Load pptx file ,clone slide, replace content and saveAs.",
   "main": "index.js",
   "directories": {},
@@ -10,8 +10,8 @@
     "xml2js": "^0.4.17"
   },
   "devDependencies": {
-    "async": "^2.1.2",
     "babel-cli": "^6.18.0",
+    "babel-polyfill": "^6.16.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-2": "^6.18.0",
     "fs-promise": "^1.0.0",
@@ -20,7 +20,7 @@
   },
   "scripts": {
     "build": "babel lib -d dist",
-    "test": "npm run build & babel-node test/Presentation_test.js"
+    "test": "npm run build & node test/Presentation_test.js"
   },
   "keywords": [
     "powerpoint",
