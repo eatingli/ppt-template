@@ -1,5 +1,7 @@
 "use strict";
 
+var entities = require("entities");
+
 var Slide = module.exports = function (rel, content) {
 	this.rel = rel;
 	this.content = content;
@@ -18,8 +20,12 @@ Slide.prototype.fill = function (data) {
 		var index = 0;
 		var temp = 0;
 
+		//必須把 "&" 之類的符號轉換 &amp;  (關鍵字 XML Entities)
+		var value = entities.encodeXML(d.value);
+
 		while ((temp = self.content.indexOf(d.key, index)) > -1) {
-			self.content = replace(self.content, index, d.key, d.value);
+
+			self.content = replace(self.content, index, d.key, value);
 			index = temp + d.value.length;
 		}
 	});
