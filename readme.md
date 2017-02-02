@@ -11,41 +11,60 @@
 1. 製作範本PPT文件，包含美術、排版等。
 2. 欲替換的文字用自訂的字串佔位，建議使用中括號框住有意義字詞來代表，例如：[Title]。
 3. 用ppt-template API讀取簡報檔案。
-    ```
-        //從串流讀取
-        myPresentation.load(...);
-
-        //從檔案讀取
-        myPresentation.loadFile(...);
-    ```
 4. 讀取並複製(clone)投影片。
-    ```
-        var cloneSlide = myPresentation.getSlide(1).clone();
-    ```
 5. 用實際內容取代(fill)原本的佔位字串。
-    ```
-        cloneSlide.fill(...);
-    ```
 6. 將完成的投影片加入陣列中，按照要輸出的順序排序。
-    ```
-        var newSlides = [cloneSlide1, cloneSlide2, cloneSlide3];
-    ```
 7. 使用投影片陣列來產生(generate)簡報(Presentation)。
-    ```
-        myPresentation.generate(newSlides)
-    ```
 8. 輸出。
-    ```
-        //輸出成檔案
-        newPresentation.saveAs(...);
+
+## APIs
+
+### 讀取PPT檔案
+```
+    //從串流讀取
+    myPresentation.load(...)
+
+    //從檔案讀取
+    myPresentation.loadFile(...)
+```
+
+### 讀取Slide數量
+```
+    myPresentation.getSlideCount()
+```
+
+### 讀取投影片
+```
+    myPresentation.getSlide(slideIndex)
+```
+
+### 產生簡報
+```
+    myPresentation.generate(newSlides)
+```
+
+### 輸出PPT檔案
+```
+    //輸出成檔案
+    newPresentation.saveAs(...)
         
-        //從串流輸出
-        newPresentation.streamAs(...)
-    ```
+    //從串流輸出
+    newPresentation.streamAs(...)
+```
+
+### 複製投影片
+```
+    mySlide.clone()
+```
+
+### 投影片文字取代
+```
+    mySlide.fill()
+```
+
 
 ## 完整範例
 ```
-
     var PPT_Template = require('ppt-template');
     var Presentation = PPT_Template.Presentation;
 

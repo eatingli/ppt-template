@@ -1,6 +1,6 @@
 {
   "name": "ppt-template",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Load pptx file ,clone slide, replace content and saveAs.",
   "main": "index.js",
   "directories": {},

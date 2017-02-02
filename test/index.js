@@ -1,7 +1,6 @@
 var PPT_Template = require('../');
 
 var Presentation = PPT_Template.Presentation;
-var Slide = PPT_Template.Slide;
 
 
 var myPresentation = new Presentation();
