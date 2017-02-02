@@ -18,9 +18,9 @@
 
     ```
 4. 讀取並複製(clone)投影片。
-```
-    var cloneSlide = myPresentation.getSlide(1).clone();
-```
+    ```
+        var cloneSlide = myPresentation.getSlide(1).clone();
+    ```
 5. 用實際內容取代(fill)原本的佔位字串。
     ```
         cloneSlide.fill([{
