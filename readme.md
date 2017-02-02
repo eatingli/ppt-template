@@ -11,6 +11,7 @@
 ## 使用
 1.製作簡報範本(PPT Template)，要替換的內容可用 [Content]、[Name]、[Key]...文字來標示。
 2.對樣板投影片(Slide)進行複製，並填值。填值格式為map物件的陣列，fill()範例：
+
 ```
 myCloneSlide.fill([{
             key: '[Content]',
@@ -20,6 +21,7 @@ myCloneSlide.fill([{
             value: 'Suwako'
         }])
 ```
+
 3.填值後產生新的.pptx並另存新檔。
 
 ## 開發
