@@ -17,10 +17,12 @@
     })
 
     ```
+
 4. 讀取並複製(clone)投影片。
     ```
         var cloneSlide = myPresentation.getSlide(1).clone();
     ```
+
 5. 用實際內容取代(fill)原本的佔位字串。
     ```
         cloneSlide.fill([{
@@ -34,14 +36,17 @@
                 value: '~~~*^@#%(^(!#~'
             }]);
     ```
+
 6. 將完成的投影片加入陣列中，按照要輸出的順序排序。
     ```
         var newSlides = [cloneSlide1, cloneSlide2, cloneSlide3];
     ```
+
 7. 使用投影片陣列來產生(generate)簡報(Presentation)。
     ```
         return myPresentation.generate(newSlides)
     ```
+    
 8. 輸出。
     ```
         return newPresentation.saveAs('test/output.pptx');
