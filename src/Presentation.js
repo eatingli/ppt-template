@@ -198,18 +198,3 @@ async function generateNodeStreamAsync(stream, zip) {
 }
 
 
-
-/*
-Presentation.prototype.getXml2Js = function(key, callback) {
-    xml2js.parseString(this.contents[key], function(err, xmlJs) {
-        if (err) throw err;
-        callback(xmlJs);
-    });
-}
-
-Presentation.prototype.getJs2Xml = getJs2Xml;
-
-function getJs2Xml(js) {
-    return new xml2js.Builder().buildObject(js);
-}
-*/
