@@ -28,7 +28,7 @@
     myPresentation.loadFile(...)
 ```
 
-- 讀取Slide數量
+- 讀取投影片數量
 ```
     myPresentation.getSlideCount()
 ```

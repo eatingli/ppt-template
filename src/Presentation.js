@@ -184,8 +184,7 @@ async function xml2jsAsync(xml) {
 
 async function generateNodeStreamAsync(stream, zip) {
     return new Promise((resolve, reject) => {
-        zip
-            .generateNodeStream({
+        zip.generateNodeStream({
                 type: 'nodebuffer',
                 streamFiles: true
             })
