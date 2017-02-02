@@ -155,10 +155,18 @@
 - 利用Presentation物件提供的輸出方法streamAs()、saveAs()，自訂串流或另外新檔
 
 ## 指令
+- 下載相依模組
+```
+    npm install
+```
 - 建立 
-``` npm run build ```
+``` 
+    npm run build
+```
 - 測試
-``` npm run test ```
+```
+    npm run test 
+```
 
 ## 其他
 - 引入Promise。
