@@ -1,13 +1,14 @@
 # PPT Template
 
 ## 簡介
-專為範本功能設計的.pptx文件操作API，依賴NodeJS。藉著複製投影片(Slide)並代換其文字內容來實作範本功能，不支援新增修改圖像、表格等元件操作......。
+專為範本功能設計的PPT文件操作API，依賴NodeJS。藉著複製投影片(Slide)並代換其文字內容來實作範本功能，不支援增改圖像、表格等元件操作......。
 
 ## 建議用法
 1. 製作範本PPT文件，包含美術、排版等。
 2. 欲替換的文字用自訂的字串佔位，建議使用中括號框住有意義字詞來代表，例如：[Title]。
 3. 用ppt-template API讀取簡報檔案。
-```
+    ```
+    var Presentation = require('ppt-template').Presentation;
     var myPresentation = new Presentation();
     
     myPresentation.loadFile('test/test.pptx')
@@ -15,7 +16,7 @@
         console.log('Read Presentation File Successfully!');
     })
 
-```
+    ```
 4. 讀取並複製(clone)投影片。
 ```
     var cloneSlide = myPresentation.getSlide(1).clone();
