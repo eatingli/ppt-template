@@ -19,7 +19,7 @@
 
 ## APIs
 
-### 讀取PPT檔案
+- 讀取PPT檔案
 ```
     //從串流讀取
     myPresentation.load(...)
@@ -28,22 +28,22 @@
     myPresentation.loadFile(...)
 ```
 
-### 讀取Slide數量
+- 讀取Slide數量
 ```
     myPresentation.getSlideCount()
 ```
 
-### 讀取投影片
+- 讀取投影片
 ```
     myPresentation.getSlide(slideIndex)
 ```
 
-### 產生簡報
+- 產生簡報
 ```
     myPresentation.generate(newSlides)
 ```
 
-### 輸出PPT檔案
+- 輸出PPT檔案
 ```
     //輸出成檔案
     newPresentation.saveAs(...)
@@ -52,12 +52,12 @@
     newPresentation.streamAs(...)
 ```
 
-### 複製投影片
+- 複製投影片
 ```
     mySlide.clone()
 ```
 
-### 投影片文字取代
+- 投影片文字取代
 ```
     mySlide.fill()
 ```
