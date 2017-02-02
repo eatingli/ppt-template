@@ -8,21 +8,19 @@
 2. 欲替換的文字用自訂的字串佔位，建議使用中括號框住有意義字詞來代表，例如：[Title]。
 3. 用ppt-template API讀取簡報檔案。
     ```
-    var Presentation = require('ppt-template').Presentation;
-    var myPresentation = new Presentation();
-    
-    myPresentation.loadFile('test/test.pptx')
-    .then(() => {
-        console.log('Read Presentation File Successfully!');
-    })
+        var Presentation = require('ppt-template').Presentation;
+        var myPresentation = new Presentation();
+        
+        myPresentation.loadFile('test/test.pptx')
+        .then(() => {
+            console.log('Read Presentation File Successfully!');
+        })
 
     ```
-
 4. 讀取並複製(clone)投影片。
     ```
         var cloneSlide = myPresentation.getSlide(1).clone();
     ```
-
 5. 用實際內容取代(fill)原本的佔位字串。
     ```
         cloneSlide.fill([{
@@ -46,7 +44,7 @@
     ```
         return myPresentation.generate(newSlides)
     ```
-    
+
 8. 輸出。
     ```
         return newPresentation.saveAs('test/output.pptx');
