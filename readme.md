@@ -12,14 +12,11 @@
 2. 欲替換的文字用自訂的字串佔位，建議使用中括號框住有意義字詞來代表，例如：[Title]。
 3. 用ppt-template API讀取簡報檔案。
     ```
-        var Presentation = require('ppt-template').Presentation;
-        var myPresentation = new Presentation();
-        
-        myPresentation.loadFile('test/test.pptx')
-        .then(() => {
-            console.log('Read Presentation File Successfully!');
-        })
+        //從串流讀取
+        myPresentation.load(...);
 
+        //從檔案讀取
+        myPresentation.loadFile(...);
     ```
 4. 讀取並複製(clone)投影片。
     ```
@@ -27,31 +24,23 @@
     ```
 5. 用實際內容取代(fill)原本的佔位字串。
     ```
-        cloneSlide.fill([{
-                key: '[Title]',
-                value: 'Hello PPT'
-            }, {
-                key: '[Title2]',
-                value: 'this is a sample'
-            }, {
-                key: '[Description]',
-                value: '~~~*^@#%(^(!#~'
-            }]);
+        cloneSlide.fill(...);
     ```
-
 6. 將完成的投影片加入陣列中，按照要輸出的順序排序。
     ```
         var newSlides = [cloneSlide1, cloneSlide2, cloneSlide3];
     ```
-
 7. 使用投影片陣列來產生(generate)簡報(Presentation)。
     ```
-        return myPresentation.generate(newSlides)
+        myPresentation.generate(newSlides)
     ```
-
 8. 輸出。
     ```
-        return newPresentation.saveAs('test/output.pptx');
+        //輸出成檔案
+        newPresentation.saveAs(...);
+        
+        //從串流輸出
+        newPresentation.streamAs(...)
     ```
 
 ## 完整範例
