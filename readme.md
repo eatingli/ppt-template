@@ -22,30 +22,30 @@
     var cloneSlide = myPresentation.getSlide(1).clone();
 ```
 5. 用實際內容取代(fill)原本的佔位字串。
-```
-    cloneSlide.fill([{
-            key: '[Title]',
-            value: 'Hello PPT'
-        }, {
-            key: '[Title2]',
-            value: 'this is a sample'
-        }, {
-            key: '[Description]',
-            value: '~~~*^@#%(^(!#~'
-        }]);
-```
+    ```
+        cloneSlide.fill([{
+                key: '[Title]',
+                value: 'Hello PPT'
+            }, {
+                key: '[Title2]',
+                value: 'this is a sample'
+            }, {
+                key: '[Description]',
+                value: '~~~*^@#%(^(!#~'
+            }]);
+    ```
 6. 將完成的投影片加入陣列中，按照要輸出的順序排序。
-```
-    var newSlides = [cloneSlide1, cloneSlide2, cloneSlide3];
-```
+    ```
+        var newSlides = [cloneSlide1, cloneSlide2, cloneSlide3];
+    ```
 7. 使用投影片陣列來產生(generate)簡報(Presentation)。
-```
-    return myPresentation.generate(newSlides)
-```
+    ```
+        return myPresentation.generate(newSlides)
+    ```
 8. 輸出。
-```
-    return newPresentation.saveAs('test/output.pptx');
-```
+    ```
+        return newPresentation.saveAs('test/output.pptx');
+    ```
 
 
 ## 功能
