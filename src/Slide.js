@@ -1,44 +1,66 @@
-var entities = require("entities");
 
-var Slide = module.exports = function(rel, content) {
-	this.rel = rel;
-	this.content = content;
-}
-
-Slide.prototype.clone = function() {
-	return new Slide(this.rel, this.content);
-}
-
-Slide.prototype.fill = function(data) {
-
-	var self = this;
-
-	data.forEach(function(d) {
-
-		var index = 0;
-		var temp = 0;
-
-		//必須把 "&" 之類的符號轉換 &amp;  (關鍵字 XML Entities)
-		var value = entities.encodeXML(d.value);
-
-		while ((temp = self.content.indexOf(d.key, index)) > -1) {
-
-			self.content = replace(self.content, index, d.key, value);
-			index = temp + d.value.length;
-		}
-	});
-
-	return this;
-}
+import entities from 'entities'
 
 
+export default class Slide {
 
-function replace(str, index, a, b) {
-	var index = str.indexOf(a, index);
-	if (index > -1) {
-		return str.substring(0, index) + str.substring(index, str.length).replace(a, b);
+	constructor(rel, content) {
+
+		// ppt/slides/_rels/slideI.xml.rels
+		this.rel = rel;
+
+		// ppt/slides/slideI.xml
+		this.content = content;
 	}
+
+	/**
+	 * 
+	 */
+	clone() {
+		return new Slide(this.rel, this.content);
+	}
+
+	/**
+	 * 
+	 */
+	fill(word) {
+
+		// 把 "&" 之類的符號轉換 &amp;  (XML Entities)
+		let value = entities.encodeXML(word.value);
+		let key = word.key;
+
+		// offset: 避免遞迴置換...
+		let offset = 0;
+		let temp = 0;
+
+		// Replace All
+		while ((temp = this.content.indexOf(key, offset)) > -1) {
+
+			this.content = replace(this.content, offset, key, value);
+			offset = temp + value.length;
+		}
+
+		// return this;
+	}
+
+	/**
+	 * 
+	 */
+	fillAll(words) {
+		words.forEach((word) => {
+			this.fill(word)
+		});
+	}
+
 }
 
-//var test = "AAABBBCCCAAABBBCCCDDD";
-//console.log(replace(test, 3, 'A', 'XX'));
+
+function replace(str, offset, a, b) {
+	let index = str.indexOf(a, offset);
+	return (index > -1) ? str.substring(0, index) + str.substring(index, str.length).replace(a, b) : str;
+}
+
+
+// var test = "AABBCCAABB";
+// console.log(replace(test, 3, 'A', 'XX')); // ---> AABBCCXXABB
+// console.log(replace(test, 3, 'D', 'XX')); // ---> AABBCCAABB

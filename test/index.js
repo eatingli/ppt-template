@@ -40,7 +40,7 @@ myPresentation.loadFile('test/test.pptx')
 	}
 
 	//投影片填值
-	cloneSlide1.fill([{
+	cloneSlide1.fillAll([{
             key: '[Title]',
             value: 'Hello PPT'
         }, {
@@ -51,7 +51,7 @@ myPresentation.loadFile('test/test.pptx')
             value: '~~~*^@#%(^(!#~'
         }]);
 
-	cloneSlide3.fill([{
+	cloneSlide3.fillAll([{
             key: '[Content1]',
             value: 'content~~~~'
         }, {

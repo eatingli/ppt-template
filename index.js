@@ -1,4 +1,7 @@
 require('babel-polyfill');
-module.exports = {};
-module.exports.Presentation = require('./dist/Presentation');
-module.exports.Slide = require('./dist/Slide');
+
+const package = {};
+package.Presentation = require('./build/Presentation').default;
+package.Slide = require('./build/Slide').default;
+
+module.exports = package;
