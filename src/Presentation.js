@@ -17,17 +17,17 @@ export default class Presentation {
      */
     async load(stream) {
 
-        // Zip file
-        let zip = await JSZip.loadAsync(stream);
+        // .pptx stream
+        let pptx = await JSZip.loadAsync(stream);
 
-        for (let key in zip.files) {
+        for (let key in pptx.files) {
 
             // 圖像之外都當作文字解析
             let ext = key.substr(key.lastIndexOf('.'));
             let type = (ext == '.xml' || ext == '.rels') ? 'string' : 'array';
 
             // 將各檔案轉成字串
-            let content = await zip.files[key].async(type);
+            let content = await pptx.files[key].async(type);
             //console.log(key, ' ', content);
 
             this.contents[key] = content;
@@ -50,6 +50,7 @@ export default class Presentation {
 
         for (let key in this.contents) {
             if (this.contents[key]) newZip.file(key, this.contents[key]);
+            else console.error('No content', key);
         }
 
         await generateNodeStreamAsync(stream, newZip);
