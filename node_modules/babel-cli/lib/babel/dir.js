@@ -11,7 +11,6 @@ var slash = require("slash");
 var path = require("path");
 var util = require("./util");
 var fs = require("fs");
-var _ = require("lodash");
 
 module.exports = function (commander, filenames) {
   function write(src, relative) {
@@ -55,44 +54,44 @@ module.exports = function (commander, filenames) {
     var stat = fs.statSync(filename);
 
     if (stat.isDirectory(filename)) {
-      (function () {
-        var dirname = filename;
+      var dirname = filename;
 
-        _.each(util.readdir(dirname), function (filename) {
-          var src = path.join(dirname, filename);
-          handleFile(src, filename);
-        });
-      })();
+      util.readdir(dirname).forEach(function (filename) {
+        var src = path.join(dirname, filename);
+        handleFile(src, filename);
+      });
     } else {
       write(filename, filename);
     }
   }
 
   if (!commander.skipInitialBuild) {
-    _.each(filenames, handle);
+    filenames.forEach(handle);
   }
 
   if (commander.watch) {
-    (function () {
-      var chokidar = util.requireChokidar();
+    var chokidar = util.requireChokidar();
 
-      _.each(filenames, function (dirname) {
-        var watcher = chokidar.watch(dirname, {
-          persistent: true,
-          ignoreInitial: true
-        });
+    filenames.forEach(function (dirname) {
+      var watcher = chokidar.watch(dirname, {
+        persistent: true,
+        ignoreInitial: true,
+        awaitWriteFinish: {
+          stabilityThreshold: 50,
+          pollInterval: 10
+        }
+      });
 
-        _.each(["add", "change"], function (type) {
-          watcher.on(type, function (filename) {
-            var relative = path.relative(dirname, filename) || filename;
-            try {
-              handleFile(filename, relative);
-            } catch (err) {
-              console.error(err.stack);
-            }
-          });
+      ["add", "change"].forEach(function (type) {
+        watcher.on(type, function (filename) {
+          var relative = path.relative(dirname, filename) || filename;
+          try {
+            handleFile(filename, relative);
+          } catch (err) {
+            console.error(err.stack);
+          }
         });
       });
-    })();
+    });
   }
 };

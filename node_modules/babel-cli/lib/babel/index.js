@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 "use strict";
 
-require("babel-core");
+var _keys = require("babel-runtime/core-js/object/keys");
+
+var _keys2 = _interopRequireDefault(_keys);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var fs = require("fs");
 var commander = require("commander");
@@ -9,10 +13,10 @@ var kebabCase = require("lodash/kebabCase");
 var options = require("babel-core").options;
 var util = require("babel-core").util;
 var uniq = require("lodash/uniq");
-var each = require("lodash/each");
 var glob = require("glob");
 
-each(options, function (option, key) {
+(0, _keys2.default)(options).forEach(function (key) {
+  var option = options[key];
   if (option.hidden) return;
 
   var arg = kebabCase(key);
@@ -46,6 +50,7 @@ commander.option("-d, --out-dir [out]", "Compile an input directory of modules i
 commander.option("-D, --copy-files", "When compiling a directory copy over non-compilable files");
 commander.option("-q, --quiet", "Don't log anything");
 
+
 var pkg = require("../../package.json");
 commander.version(pkg.version + " (babel-core " + require("babel-core").version + ")");
 commander.usage("[options] <files ...>");
@@ -65,7 +70,7 @@ var filenames = commander.args.reduce(function (globbed, input) {
 
 filenames = uniq(filenames);
 
-each(filenames, function (filename) {
+filenames.forEach(function (filename) {
   if (!fs.existsSync(filename)) {
     errors.push(filename + " doesn't exist");
   }
@@ -100,7 +105,8 @@ if (errors.length) {
 
 var opts = exports.opts = {};
 
-each(options, function (opt, key) {
+(0, _keys2.default)(options).forEach(function (key) {
+  var opt = options[key];
   if (commander[key] !== undefined && commander[key] !== opt.default) {
     opts[key] = commander[key];
   }

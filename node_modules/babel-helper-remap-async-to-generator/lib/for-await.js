@@ -3,9 +3,9 @@
 exports.__esModule = true;
 
 exports.default = function (path, helpers) {
-  var node = path.node;
-  var scope = path.scope;
-  var parent = path.parent;
+  var node = path.node,
+      scope = path.scope,
+      parent = path.parent;
 
 
   var stepKey = scope.generateUidIdentifier("step");

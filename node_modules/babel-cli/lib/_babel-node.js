@@ -30,10 +30,6 @@ var _vm = require("vm");
 
 var _vm2 = _interopRequireDefault(_vm);
 
-var _lodash = require("lodash");
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
 require("babel-polyfill");
 
 var _babelRegister = require("babel-register");
@@ -122,42 +118,40 @@ if (program.eval || program.print) {
 
   var result = _eval(code, global.__filename);
   if (program.print) {
-    var output = _lodash2.default.isString(result) ? result : (0, _util.inspect)(result);
+    var output = typeof result === "string" ? result : (0, _util.inspect)(result);
     process.stdout.write(output + "\n");
   }
 } else {
   if (program.args.length) {
-    (function () {
-      var args = process.argv.slice(2);
+    var args = process.argv.slice(2);
 
-      var i = 0;
-      var ignoreNext = false;
-      _lodash2.default.each(args, function (arg, i2) {
-        if (ignoreNext) {
-          ignoreNext = false;
-          return;
+    var i = 0;
+    var ignoreNext = false;
+    args.some(function (arg, i2) {
+      if (ignoreNext) {
+        ignoreNext = false;
+        return;
+      }
+
+      if (arg[0] === "-") {
+        var parsedArg = program[arg.slice(2)];
+        if (parsedArg && parsedArg !== true) {
+          ignoreNext = true;
         }
+      } else {
+        i = i2;
+        return true;
+      }
+    });
+    args = args.slice(i);
 
-        if (arg[0] === "-") {
-          var parsedArg = program[arg.slice(2)];
-          if (parsedArg && parsedArg !== true) {
-            ignoreNext = true;
-          }
-        } else {
-          i = i2;
-          return false;
-        }
-      });
-      args = args.slice(i);
+    var filename = args[0];
+    if (!(0, _pathIsAbsolute2.default)(filename)) args[0] = _path2.default.join(process.cwd(), filename);
 
-      var filename = args[0];
-      if (!(0, _pathIsAbsolute2.default)(filename)) args[0] = _path2.default.join(process.cwd(), filename);
+    process.argv = ["node"].concat(args);
+    process.execArgv.unshift(__filename);
 
-      process.argv = ["node"].concat(args);
-      process.execArgv.unshift(__filename);
-
-      _module3.default.runMain();
-    })();
+    _module3.default.runMain();
   } else {
     replStart();
   }

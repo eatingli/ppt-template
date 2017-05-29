@@ -109,7 +109,7 @@ var Presentation = function () {
         key: 'load',
         value: function () {
             var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(stream) {
-                var zip, key, ext, type, content;
+                var pptx, key, ext, type, content;
                 return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -118,8 +118,8 @@ var Presentation = function () {
                                 return _jszip2.default.loadAsync(stream);
 
                             case 2:
-                                zip = _context.sent;
-                                _context.t0 = regeneratorRuntime.keys(zip.files);
+                                pptx = _context.sent;
+                                _context.t0 = regeneratorRuntime.keys(pptx.files);
 
                             case 4:
                                 if ((_context.t1 = _context.t0()).done) {
@@ -137,7 +137,7 @@ var Presentation = function () {
                                 // 將各檔案轉成字串
 
                                 _context.next = 10;
-                                return zip.files[key].async(type);
+                                return pptx.files[key].async(type);
 
                             case 10:
                                 content = _context.sent;
@@ -216,7 +216,7 @@ var Presentation = function () {
 
 
                                 for (key in this.contents) {
-                                    if (this.contents[key]) newZip.file(key, this.contents[key]);
+                                    if (this.contents[key]) newZip.file(key, this.contents[key]);else console.error('No content', key);
                                 }
 
                                 _context3.next = 4;

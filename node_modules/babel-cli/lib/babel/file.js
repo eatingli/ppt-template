@@ -16,7 +16,6 @@ var slash = require("slash");
 var path = require("path");
 var util = require("./util");
 var fs = require("fs");
-var _ = require("lodash");
 
 module.exports = function (commander, filenames, opts) {
   if (commander.sourceMaps === "inline") {
@@ -34,39 +33,37 @@ module.exports = function (commander, filenames, opts) {
     var code = "";
     var offset = 0;
 
-    _.each(results, function (result) {
+    results.forEach(function (result) {
       code += result.code + "\n";
 
       if (result.map) {
-        (function () {
-          var consumer = new sourceMap.SourceMapConsumer(result.map);
-          var sources = new _set2.default();
+        var consumer = new sourceMap.SourceMapConsumer(result.map);
+        var sources = new _set2.default();
 
-          consumer.eachMapping(function (mapping) {
-            if (mapping.source != null) sources.add(mapping.source);
+        consumer.eachMapping(function (mapping) {
+          if (mapping.source != null) sources.add(mapping.source);
 
-            map.addMapping({
-              generated: {
-                line: mapping.generatedLine + offset,
-                column: mapping.generatedColumn
-              },
-              source: mapping.source,
-              original: mapping.source == null ? null : {
-                line: mapping.originalLine,
-                column: mapping.originalColumn
-              }
-            });
-          });
-
-          sources.forEach(function (source) {
-            var content = consumer.sourceContentFor(source, true);
-            if (content !== null) {
-              map.setSourceContent(source, content);
+          map.addMapping({
+            generated: {
+              line: mapping.generatedLine + offset,
+              column: mapping.generatedColumn
+            },
+            source: mapping.source,
+            original: mapping.source == null ? null : {
+              line: mapping.originalLine,
+              column: mapping.originalColumn
             }
           });
+        });
 
-          offset = code.split("\n").length;
-        })();
+        sources.forEach(function (source) {
+          var content = consumer.sourceContentFor(source, true);
+          if (content !== null) {
+            map.setSourceContent(source, content);
+          }
+        });
+
+        offset = code.split("\n").length - 1;
       }
     });
 
@@ -118,24 +115,22 @@ module.exports = function (commander, filenames, opts) {
     var _filenames = [];
     results = [];
 
-    _.each(filenames, function (filename) {
+    filenames.forEach(function (filename) {
       if (!fs.existsSync(filename)) return;
 
       var stat = fs.statSync(filename);
       if (stat.isDirectory()) {
-        (function () {
-          var dirname = filename;
+        var dirname = filename;
 
-          _.each(util.readdirFilter(filename), function (filename) {
-            _filenames.push(path.join(dirname, filename));
-          });
-        })();
+        util.readdirFilter(filename).forEach(function (filename) {
+          _filenames.push(path.join(dirname, filename));
+        });
       } else {
         _filenames.push(filename);
       }
     });
 
-    _.each(_filenames, function (filename) {
+    _filenames.forEach(function (filename) {
       if (util.shouldIgnore(filename)) return;
 
       var sourceFilename = filename;
@@ -165,7 +160,11 @@ module.exports = function (commander, filenames, opts) {
       var chokidar = util.requireChokidar();
       chokidar.watch(filenames, {
         persistent: true,
-        ignoreInitial: true
+        ignoreInitial: true,
+        awaitWriteFinish: {
+          stabilityThreshold: 50,
+          pollInterval: 10
+        }
       }).on("all", function (type, filename) {
         if (util.shouldIgnore(filename) || !util.canCompile(filename, commander.extensions)) return;
 

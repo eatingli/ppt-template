@@ -1,6 +1,6 @@
 {
   "name": "ppt-template",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Generate .pptx by replacing content in template.",
   "main": "index.js",
   "directories": {},

@@ -61,8 +61,8 @@ var awaitVisitor = {
     }
   },
   ForAwaitStatement: function ForAwaitStatement(path, _ref3) {
-    var file = _ref3.file;
-    var wrapAwait = _ref3.wrapAwait;
+    var file = _ref3.file,
+        wrapAwait = _ref3.wrapAwait;
     var node = path.node;
 
 
@@ -71,8 +71,8 @@ var awaitVisitor = {
       wrapAwait: wrapAwait
     });
 
-    var declar = build.declar;
-    var loop = build.loop;
+    var declar = build.declar,
+        loop = build.loop;
 
     var block = loop.body;
 
@@ -135,9 +135,18 @@ function plainFunction(path, callId) {
     NAME: asyncFnId,
     REF: path.scope.generateUidIdentifier("ref"),
     FUNCTION: built,
-    PARAMS: node.params.map(function () {
-      return path.scope.generateUidIdentifier("x");
-    })
+    PARAMS: node.params.reduce(function (acc, param) {
+      acc.done = acc.done || t.isAssignmentPattern(param) || t.isRestElement(param);
+
+      if (!acc.done) {
+        acc.params.push(path.scope.generateUidIdentifier("x"));
+      }
+
+      return acc;
+    }, {
+      params: [],
+      done: false
+    }).params
   }).expression;
 
   if (isDeclaration) {
