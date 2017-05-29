@@ -53,6 +53,13 @@ describe('# Slide', () => {
             testSlide.fill(pair);
             assert.equal(testSlide.content, '&amp; ~~ Cat ~~ Cat');
         });
+
+        it('Pair Value Error', () => {
+            assert.throws(() => {
+                let pair = { key: 'k' };
+                testSlide.fill(pair);
+            }, Error);
+        });
     });
 
     describe('- fillAll()', () => {
