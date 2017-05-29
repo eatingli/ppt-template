@@ -6,10 +6,10 @@ export default class Slide {
 
 	constructor(rel, content) {
 
-		// ppt/slides/_rels/slideI.xml.rels
+		// ppt/slides/_rels/slide(i).xml.rels
 		this.rel = rel;
 
-		// ppt/slides/slideI.xml
+		// ppt/slides/slide(i).xml
 		this.content = content;
 	}
 
@@ -23,44 +23,47 @@ export default class Slide {
 	/**
 	 * 
 	 */
-	fill(word) {
+	fill(pair) {
 
-		// 把 "&" 之類的符號轉換 &amp;  (XML Entities)
-		let value = entities.encodeXML(word.value);
-		let key = word.key;
+		// 檢查key 和value是否存在
 
-		// offset: 避免遞迴置換...
+		// 處理 XML Entities
+		let value = entities.encodeXML(pair.value);
+		let key = pair.key;
+
+		// offset: 避免遞迴置換
 		let offset = 0;
 		let temp = 0;
 
 		// Replace All
 		while ((temp = this.content.indexOf(key, offset)) > -1) {
 
-			this.content = replace(this.content, offset, key, value);
+			this.content = Slide.replace(this.content, offset, key, value);
 			offset = temp + value.length;
 		}
-
-		// return this;
 	}
 
 	/**
 	 * 
 	 */
-	fillAll(words) {
-		words.forEach((word) => {
-			this.fill(word)
+	fillAll(pairs) {
+		pairs.forEach((pair) => {
+			this.fill(pair)
 		});
 	}
 
+	/**
+	 * 
+	 */
+	static replace(str, offset, a, b) {
+		let index = str.indexOf(a, offset);
+		return (index > -1) ? str.substring(0, index) + str.substring(index, str.length).replace(a, b) : str;
+	}
+
+	/**
+	 * 
+	 */
+	static pair(key, value) {
+		return { key: key, value: value };
+	}
 }
-
-
-function replace(str, offset, a, b) {
-	let index = str.indexOf(a, offset);
-	return (index > -1) ? str.substring(0, index) + str.substring(index, str.length).replace(a, b) : str;
-}
-
-
-// var test = "AABBCCAABB";
-// console.log(replace(test, 3, 'A', 'XX')); // ---> AABBCCXXABB
-// console.log(replace(test, 3, 'D', 'XX')); // ---> AABBCCAABB

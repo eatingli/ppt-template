@@ -6,7 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-//包裝成Promise版本
+/**
+ * Parse xml to object (Promise)
+ */
 var xml2jsAsync = function () {
     var _ref6 = _asyncToGenerator(regeneratorRuntime.mark(function _callee6(xml) {
         return regeneratorRuntime.wrap(function _callee6$(_context6) {
@@ -31,6 +33,11 @@ var xml2jsAsync = function () {
         return _ref6.apply(this, arguments);
     };
 }();
+
+/**
+ * generateNodeStreamAsync (Promise)
+ */
+
 
 var generateNodeStreamAsync = function () {
     var _ref7 = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(stream, zip) {
@@ -279,14 +286,16 @@ var Presentation = function () {
     }, {
         key: 'getSlide',
         value: function getSlide(index) {
+
             if (index < 1 || index > this.getSlideCount()) return null;
+
             var rel = this.contents['ppt/slides/_rels/slide' + index + '.xml.rels'];
             var content = this.contents['ppt/slides/slide' + index + '.xml'];
             return new _Slide2.default(rel, content);
         }
 
         /**
-         * 
+         * Clone presention
          */
 
     }, {
@@ -305,7 +314,7 @@ var Presentation = function () {
         key: 'generate',
         value: function () {
             var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(slides) {
-                var newPresentation, newContents, oldCount, builder, i, _i, slide, temp, _i2, rId, _i3, maxId, _i4;
+                var newPresentation, newContents, slideCount, builder, i, _i, slide, temp, _i2, rId, _i3, maxId, _i4;
 
                 return regeneratorRuntime.wrap(function _callee5$(_context5) {
                     while (1) {
@@ -313,12 +322,12 @@ var Presentation = function () {
                             case 0:
                                 newPresentation = this.clone();
                                 newContents = newPresentation.contents;
-                                oldCount = newPresentation.getSlideCount();
+                                slideCount = newPresentation.getSlideCount();
                                 builder = new _xml2js2.default.Builder();
 
-                                // 清掉舊的 ppt/slides/slideX.xml & ppt/slides/_rels/slideX.xml.rels
+                                // Clear "ppt/slides/slideX.xml" & "ppt/slides/_rels/slideX.xml.rels"
 
-                                for (i = 0; i < oldCount; i++) {
+                                for (i = 0; i < slideCount; i++) {
                                     delete newContents['ppt/slides/_rels/slide' + (i + 1) + '.xml.rels'];
                                     delete newContents['ppt/slides/slide' + (i + 1) + '.xml'];
                                 }
@@ -331,15 +340,15 @@ var Presentation = function () {
                                     newContents['ppt/slides/slide' + (_i + 1) + '.xml'] = slide.content;
                                 }
 
-                                //# 修改 [Content_Types].xml
+                                //# Edit "[Content_Types].xml""
                                 _context5.next = 8;
-                                return xml2jsAsync(newPresentation.contents['[Content_Types].xml']);
+                                return xml2jsAsync(newContents['[Content_Types].xml']);
 
                             case 8:
                                 temp = _context5.sent;
 
 
-                                // 清掉舊的
+                                // Clear old
                                 temp['Types']['Override'].forEach(function (override, index) {
                                     if (override['$'].PartName.substr(0, 17) == '/ppt/slides/slide') delete temp['Types']['Override'][index];
                                 });
@@ -359,7 +368,7 @@ var Presentation = function () {
 
                                 //# 修改 ppt/_rels/presentation.xml.rels
                                 _context5.next = 14;
-                                return xml2jsAsync(newPresentation.contents['ppt/_rels/presentation.xml.rels']);
+                                return xml2jsAsync(newContents['ppt/_rels/presentation.xml.rels']);
 
                             case 14:
                                 temp = _context5.sent;
@@ -394,7 +403,7 @@ var Presentation = function () {
 
                                 //# 修改 ppt/presentation.xml
                                 _context5.next = 21;
-                                return xml2jsAsync(newPresentation.contents['ppt/presentation.xml']);
+                                return xml2jsAsync(newContents['ppt/presentation.xml']);
 
                             case 21:
                                 temp = _context5.sent;
@@ -426,7 +435,7 @@ var Presentation = function () {
 
                                 // 修改 docProps/app.xml (increment slidecount)
                                 _context5.next = 29;
-                                return xml2jsAsync(newPresentation.contents['docProps/app.xml']);
+                                return xml2jsAsync(newContents['docProps/app.xml']);
 
                             case 29:
                                 temp = _context5.sent;

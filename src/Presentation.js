@@ -75,14 +75,17 @@ export default class Presentation {
      * Get silde by index, index is from 1 to length.
      */
     getSlide(index) {
-        if (index < 1 || index > this.getSlideCount()) return null;
+
+        if (index < 1 || index > this.getSlideCount())
+            return null;
+
         let rel = this.contents['ppt/slides/_rels/slide' + index + '.xml.rels'];
         let content = this.contents['ppt/slides/slide' + index + '.xml'];
         return new Slide(rel, content);
     }
 
     /**
-     * 
+     * Clone presention
      */
     clone() {
         let newPresentation = new Presentation();
@@ -96,11 +99,11 @@ export default class Presentation {
     async generate(slides) {
         let newPresentation = this.clone();
         let newContents = newPresentation.contents;
-        let oldCount = newPresentation.getSlideCount();
+        let slideCount = newPresentation.getSlideCount();
         let builder = new xml2js.Builder();
 
-        // 清掉舊的 ppt/slides/slideX.xml & ppt/slides/_rels/slideX.xml.rels
-        for (let i = 0; i < oldCount; i++) {
+        // Clear "ppt/slides/slideX.xml" & "ppt/slides/_rels/slideX.xml.rels"
+        for (let i = 0; i < slideCount; i++) {
             delete newContents['ppt/slides/_rels/slide' + (i + 1) + '.xml.rels'];
             delete newContents['ppt/slides/slide' + (i + 1) + '.xml'];
         }
@@ -112,10 +115,10 @@ export default class Presentation {
             newContents['ppt/slides/slide' + (i + 1) + '.xml'] = slide.content;
         }
 
-        //# 修改 [Content_Types].xml
-        let temp = await xml2jsAsync(newPresentation.contents['[Content_Types].xml']);
+        //# Edit "[Content_Types].xml""
+        let temp = await xml2jsAsync(newContents['[Content_Types].xml']);
 
-        // 清掉舊的
+        // Clear old
         temp['Types']['Override'].forEach((override, index) => {
             if (override['$'].PartName.substr(0, 17) == '/ppt/slides/slide')
                 delete temp['Types']['Override'][index];
@@ -135,7 +138,7 @@ export default class Presentation {
         newContents['[Content_Types].xml'] = builder.buildObject(temp);
 
         //# 修改 ppt/_rels/presentation.xml.rels
-        temp = await xml2jsAsync(newPresentation.contents['ppt/_rels/presentation.xml.rels']);
+        temp = await xml2jsAsync(newContents['ppt/_rels/presentation.xml.rels']);
 
         //刪除舊的
         temp['Relationships']['Relationship'].forEach((relationship, index) => {
@@ -165,7 +168,7 @@ export default class Presentation {
         newContents['ppt/_rels/presentation.xml.rels'] = builder.buildObject(temp);
 
         //# 修改 ppt/presentation.xml
-        temp = await xml2jsAsync(newPresentation.contents['ppt/presentation.xml']);
+        temp = await xml2jsAsync(newContents['ppt/presentation.xml']);
 
         //計算 maxId
         let maxId = 0;
@@ -191,7 +194,7 @@ export default class Presentation {
         newContents['ppt/presentation.xml'] = builder.buildObject(temp);
 
         // 修改 docProps/app.xml (increment slidecount)
-        temp = await xml2jsAsync(newPresentation.contents['docProps/app.xml']);
+        temp = await xml2jsAsync(newContents['docProps/app.xml']);
         temp["Properties"]["Slides"][0] = slides.length;
         newContents['docProps/app.xml'] = builder.buildObject(temp);
 
@@ -201,7 +204,9 @@ export default class Presentation {
     }
 }
 
-//包裝成Promise版本
+/**
+ * Parse xml to object (Promise)
+ */
 async function xml2jsAsync(xml) {
     return new Promise((resolve, reject) => {
         xml2js.parseString(xml, (err, xmlJs) => {
@@ -211,6 +216,9 @@ async function xml2jsAsync(xml) {
     });
 }
 
+/**
+ * generateNodeStreamAsync (Promise)
+ */
 async function generateNodeStreamAsync(stream, zip) {
     return new Promise((resolve, reject) => {
         zip.generateNodeStream({
