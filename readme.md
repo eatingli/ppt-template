@@ -2,7 +2,7 @@
 
 ## Introduce
 
-PPT Template + Replace Content = Generate Result！
+### PPT Template + Customized Content = Generate Result！
 
 ![template](/img/01.png)
 ![customized content](/img/02.png)
@@ -10,24 +10,24 @@ PPT Template + Replace Content = Generate Result！
 
 ## Dictionary
 
-- Presentation - Whole PPT document
-- Slide - A page of presentation
+- **Presentation** - Whole PPT document
+- **Slide** - A page of presentation
 
 ## Use
 
 1. Prepare the PPT document as template.
 2. Put **place-holder** text at variable area. Recommend use meaning string surrounding by brackets.
 
-    eg. [Title]、[Main Content]
+    eg. **[Title]**、**[Main Content]**
 
-3. Read pptx file by ppt-template api.
+3. Load pptx file by ppt-template API.
 4. Get and clone template slide, then replace variable by customized content.
 5. Put new sildes in array with wanna order, then generate presentation document.
-6. Output .pptx file.
+6. Output your pptx file.
 
 ## APIs
 
-- Load PPT Document
+- **Load PPT Document**
 
         // From stream
         myPresentation.load(...)
@@ -36,21 +36,21 @@ PPT Template + Replace Content = Generate Result！
         myPresentation.loadFile(...)
 
 
-- Get Silde Count
+- **Get Silde Count**
 
         myPresentation.getSlideCount()
 
 
-- Get Slide by Index (Base from index 1)
+- **Get Slide by Index (Base from index 1)**
 
         myPresentation.getSlide(slideIndex)
 
 
-- Generate PPT Document
+- **Generate PPT Document**
 
         myPresentation.generate(newSlides)
 
-- Output pptx
+- **Output pptx**
 
         // Output file
         newPresentation.saveAs(...)
@@ -59,12 +59,12 @@ PPT Template + Replace Content = Generate Result！
         newPresentation.streamAs(...)
 
 
-- Clone Slide
+- **Clone Slide**
 
         mySlide.clone()
 
 
-- Fill Content
+- **Fill Content**
 
         pair = {key:'place-holder', value:'content'}
         mySlide.fill(pair)
@@ -81,18 +81,18 @@ PPT Template + Replace Content = Generate Result！
 
 ## Command
 
-- Initial
+- **Initial**
 
         npm install
 
-- Babel Build
+- **Babel Build**
 
         npm run build
 
-- Mocha Test
+- **Mocha Test**
 
         npm run test
 
-- Example
+- **Example**
 
         npm run example
