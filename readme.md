@@ -2,7 +2,7 @@
 
 ## Introduce
 
-### PPT Template + Customized Content = Generate Result！
+        PPT Template + Customized Content = Generate Result！
 
 ![template](/img/01.png)
 ![customized content](/img/02.png)
@@ -13,7 +13,7 @@
 - **Presentation** - Whole PPT document
 - **Slide** - A page of presentation
 
-## Use
+## Usage
 
 1. Prepare the PPT document as template.
 2. Put **place-holder** text at variable area. Recommend use meaning string surrounding by brackets.
