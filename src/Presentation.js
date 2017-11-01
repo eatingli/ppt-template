@@ -43,7 +43,7 @@ export default class Presentation {
     }
 
     /**
-     * 
+     *
      */
     async streamAs(stream) {
         let newZip = JSZip();
@@ -52,12 +52,21 @@ export default class Presentation {
             if (this.contents[key]) newZip.file(key, this.contents[key]);
             else console.error('No content', key);
         }
-
         await generateNodeStreamAsync(stream, newZip);
     }
 
+    async generateBlob(){
+        let newZip = JSZip();
+
+        for (let key in this.contents) {
+            if (this.contents[key]) newZip.file(key, this.contents[key]);
+            else console.error('No content', key);
+        }
+        await generateNodeStreamAsync({type:"blob"},newZip);
+    }
+
     /**
-     * 
+     *
      */
     async saveAs(file) {
         await this.streamAs(fs.createWriteStream(file));
@@ -95,7 +104,7 @@ export default class Presentation {
     }
 
     /**
-     * 
+     *
      */
     async generate(slides) {
         let newPresentation = this.clone();
